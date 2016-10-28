@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import Radium from 'radium';
+const ipcRenderer = window.require('electron').ipcRenderer;
 
 export default class HTTPHeaderEditor extends React.Component {
   constructor(props) {
@@ -28,6 +29,15 @@ export default class HTTPHeaderEditor extends React.Component {
   }
 
   completeAdd = () => {
+    if (ReactDOM.findDOMNode(this.newKeyInput).value === 'Cookie') {
+      var val = ReactDOM.findDOMNode(this.newValInput).value;
+      //console.log(val);
+      var cookieParts = val.split('!!!');
+      console.log('url: ', cookieParts[0]);
+      console.log('name: ', cookieParts[1]);
+      console.log('value: ', cookieParts[2]);
+      ipcRenderer.send('set-cookie', { url: cookieParts[0], name: cookieParts[1], value: cookieParts[2]});
+    };
     this.setState({
       headers: [
         ...this.state.headers,

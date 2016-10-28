@@ -23,6 +23,17 @@ app.on('ready', function() {
 
   mainWindow = new BrowserWindow({ width: 1024, height: 728 });
 
+  electron.ipcMain.on('set-cookie', (event, arg) => {
+    //console.log('SET COOKIE E: ', event);
+    //console.log('SET COOKIE ARG: ', arg);
+    mainWindow.webContents.session.cookies.set(arg,
+      function(error, cookies) {
+          if (error) throw error;
+            console.log('Update Cookies!!!:', cookies);
+      }
+    ); 
+  });
+
   if (process.env.HOT) {
     mainWindow.loadURL('file://' + __dirname + '/app/hot-dev-app.html');
   } else {

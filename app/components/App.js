@@ -11,7 +11,6 @@ Modal.setAppElement(document.getElementById('react-root'));
 
 import HTTPHeaderEditor from './HTTPHeaderEditor';
 
-
 export default class App extends React.Component {
   constructor() {
     super();
@@ -151,7 +150,7 @@ export default class App extends React.Component {
 
   graphQLFetcher = (graphQLParams) => {
     const defaultHeaders = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     };
 
     const { endpoint, method, headers } = this.getCurrentTab();
@@ -163,8 +162,8 @@ export default class App extends React.Component {
       }
 
       url += url.indexOf('?') == -1 ? "?" : "&";
-
       return fetch(url + "query=" + encodeURIComponent(graphQLParams['query']) + "&variables=" + encodeURIComponent(graphQLParams['variables']), {
+        credentials: 'include',
         method: method,
         credentials: 'include',
         headers: Object.assign({}, defaultHeaders, headers),
@@ -172,6 +171,7 @@ export default class App extends React.Component {
       }).then(response => response.json());
     }
     return fetch(endpoint, {
+      credentials: 'include',
       method: method,
       credentials: 'include',
       headers: Object.assign({}, defaultHeaders, headers),
